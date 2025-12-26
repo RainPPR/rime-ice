@@ -35,7 +35,7 @@ switcher:
     - F4
     - Control+grave
     - Control+Shift+grave
-    # - Alt+grave
+    - Alt+grave
   # 开关记忆（方案中的 switches），从方案选单（而非快捷键）切换时会记住的选项，需要记忆的开关不能设定 reset
   # 部分前端（如小企鹅），实现了全局状态，切换后在任何焦点都会记住；
   # 部分前端（如鼠须管），仅在当前会话中记住，每个App或一个App的不同输入框都会单独管理；
@@ -66,13 +66,13 @@ switcher:
 # inline_ascii 切换到临时英文模式，按回车上屏后回到中文状态
 # noop         屏蔽快捷键，不切换中英，但不要屏蔽 CapsLock
 ascii_composer:
-  good_old_caps_lock: true  # true | false
+  good_old_caps_lock: true # true | false
   switch_key:
-    Caps_Lock: clear      # commit_code | commit_text | clear
-    Shift_L: commit_code  # commit_code | commit_text | inline_ascii | clear | noop
-    Shift_R: noop         # commit_code | commit_text | inline_ascii | clear | noop
-    Control_L: noop       # commit_code | commit_text | inline_ascii | clear | noop
-    Control_R: noop       # commit_code | commit_text | inline_ascii | clear | noop
+    Caps_Lock: commit_text # commit_code | commit_text | clear
+    Shift_L: commit_code   # commit_code | commit_text | inline_ascii | clear | noop
+    Shift_R: commit_code   # commit_code | commit_text | inline_ascii | clear | noop
+    Control_L: noop        # commit_code | commit_text | inline_ascii | clear | noop
+    Control_R: noop        # commit_code | commit_text | inline_ascii | clear | noop
 
 
 ###################################################################################
@@ -91,7 +91,7 @@ ascii_composer:
 #              '`'（反引号）没有改成 '·'（间隔号）。
 punctuator:
   digit_separators: ",.:"  # 在此处指定的字符，在数字后被输入，若再次输入数字，则连同数字直接上屏；若双击，则恢复映射。 # librime >= 1.13.0
-  # digit_separator_action: commit  # 关闭上述行为 librime >= 1.13.1
+  digit_separator_action: commit  # 关闭上述行为 librime >= 1.13.1
   full_shape:
     ' ' : { commit: '　' }
     ',' : { commit: ， }
@@ -139,13 +139,13 @@ punctuator:
     '"' : { pair: [ '“', '”' ] }
     '\' : '、'
     '|' : '|'
-    '`' : '`'
+    '`' : '·'
     '~' : '~'
     '!' : '！'
     '@' : '@'
     '#' : '#'
     '%' : '%'
-    '$' : '¥'
+    '$' : '$'
     '^' : '……'
     '&' : '&'
     '*' : '*'
@@ -157,8 +157,8 @@ punctuator:
     '=' : '='
     '[' : '【'
     ']' : '】'
-    '{' : '「'
-    '}' : '」'
+    # '{' : '「'
+    # '}' : '」'
 
 
 # 处理符合特定规则的输入码，如网址、反查
@@ -182,9 +182,10 @@ key_binder:
     # Tab / Shift+Tab 切换光标至下/上一个拼音
     - { when: composing, accept: Shift+Tab, send: Shift+Left }
     - { when: composing, accept: Tab, send: Shift+Right }
+
     # Tab / Shift+Tab 翻页
-    # - { when: has_menu, accept: Shift+Tab, send: Page_Up }
-    # - { when: has_menu, accept: Tab, send: Page_Down }
+    - { when: has_menu, accept: Shift+Tab, send: Page_Up }
+    - { when: has_menu, accept: Tab, send: Page_Down }
 
     # Option/Alt + ←/→ 切换光标至下/上一个拼音
     - { when: composing, accept: Alt+Left, send: Shift+Left }
@@ -199,8 +200,8 @@ key_binder:
     - { when: has_menu, accept: equal, send: Page_Down }
 
     # 翻页 , .
-    # - { when: has_menu, accept: comma, send: Page_Up }
-    # - { when: has_menu, accept: period, send: Page_Down }
+    - { when: has_menu, accept: comma, send: Page_Up }
+    - { when: has_menu, accept: period, send: Page_Down }
 
     # 翻页 [ ]  ⚠️ 开启时请修改上面以词定字的快捷键
     # - { when: has_menu, accept: bracketleft, send: Page_Up }
@@ -208,16 +209,16 @@ key_binder:
 
     # 两种按键配置，鼠须管 Control+Shift+4 生效，小狼毫 Control+Shift+dollar 生效，都写上了。
     # numbered_mode_switch:
-    # - { when: always, select: .next, accept: Control+Shift+1 }                  # 在最近的两个方案之间切换
-    # - { when: always, select: .next, accept: Control+Shift+exclam }             # 在最近的两个方案之间切换
-    # - { when: always, toggle: ascii_mode, accept: Control+Shift+2 }             # 切换中英
-    # - { when: always, toggle: ascii_mode, accept: Control+Shift+at }            # 切换中英
-    - { when: always, toggle: ascii_punct, accept: Control+Shift+3 }              # 切换中英标点
-    - { when: always, toggle: ascii_punct, accept: Control+Shift+numbersign }     # 切换中英标点
-    - { when: always, toggle: traditionalization, accept: Control+Shift+4 }       # 切换简繁
-    - { when: always, toggle: traditionalization, accept: Control+Shift+dollar }  # 切换简繁
-    # - { when: always, toggle: full_shape, accept: Control+Shift+5 }             # 切换全半角
-    # - { when: always, toggle: full_shape, accept: Control+Shift+percent }       # 切换全半角
+    - { when: always, select: .next, accept: Control+Shift+1 }                   # 在最近的两个方案之间切换
+    - { when: always, select: .next, accept: Control+Shift+exclam }              # 在最近的两个方案之间切换
+    - { when: always, toggle: ascii_mode, accept: Control+Shift+2 }              # 切换中英
+    - { when: always, toggle: ascii_mode, accept: Control+Shift+at }             # 切换中英
+    - { when: always, toggle: ascii_punct, accept: Control+Shift+3 }             # 切换中英标点
+    - { when: always, toggle: ascii_punct, accept: Control+Shift+numbersign }    # 切换中英标点
+    - { when: always, toggle: traditionalization, accept: Control+Shift+4 }      # 切换简繁
+    - { when: always, toggle: traditionalization, accept: Control+Shift+dollar } # 切换简繁
+    - { when: always, toggle: full_shape, accept: Control+Shift+5 }              # 切换全半角
+    - { when: always, toggle: full_shape, accept: Control+Shift+percent }        # 切换全半角
 
     # emacs_editing:
     # - { when: composing, accept: Control+p, send: Up }
